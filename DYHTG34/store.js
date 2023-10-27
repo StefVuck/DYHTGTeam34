@@ -1,8 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import navReducer from "./slices/navSlice";
-
+import orderReducer from "./slices/orderSlice";
 export const store = configureStore({
   reducer: {
-    nav: navReducer,
+    order: orderReducer,  
   }
 });
