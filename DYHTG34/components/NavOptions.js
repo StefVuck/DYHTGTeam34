@@ -13,8 +13,19 @@ const data = [
     },
     {
         id: "456",
-        title: "Extra",
-        screen: "ExtraScreen",
+        title: "Profile",
+        screen: "UserProfileScreen",
+    },
+
+    {
+        id: "789",
+        title: "Login",
+        screen: "LoginScreen",
+    },
+    {
+        id: "912",
+        title: "Products",
+        screen: "ProductScreen",
     },
 ];
 

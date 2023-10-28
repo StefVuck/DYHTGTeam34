@@ -5,9 +5,12 @@ import { store } from "./store";
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import HomeScreen from "./screens/HomeScreen";
 import OrderScreen from "./screens/OrderScreen"
+import LoginScreen from "./screens/LoginScreen"
+import ProductScreen from './screens/ProductScreen';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import UserProfileScreen from './screens/UserProfileScreen';
 
 
 export default function App() {
@@ -20,7 +23,10 @@ export default function App() {
       
       <Stack.Navigator>
         <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false,}} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false, } } />
         <Stack.Screen name="OrderScreen" component={OrderScreen} options={{headerShown: false,}} />
+        <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} options={{headerShown: false,}} />
+        <Stack.Screen name="ProductScreen" component={ProductScreen} options={{headerShown: false,}} />
       </Stack.Navigator>
 
       </SafeAreaProvider>
