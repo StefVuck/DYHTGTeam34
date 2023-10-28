@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, ActivityIndicator, StyleSheet, FlatList, Image, SafeAreaView, Dimensions } from 'react-native';
 import { ScreenHeight, ScreenWidth } from 'react-native-elements/dist/helpers';
 import tw from "tailwind-react-native-classnames";
+
+
+import { htmlToText } from 'html-to-text';
+import RenderHtml from 'react-native-render-html';
+
 const ProductScreen = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -67,7 +72,7 @@ const ProductScreen = () => {
     };
     return PickupEnumMap[PickupEnum];
   };
-
+  
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -94,6 +99,7 @@ const ProductScreen = () => {
         ) : (
             <FlatList
                 data={data}
+                style={styles.FlatList}
                 keyExtractor={(item) => item.SKU_ID}
                 pagingEnabled
                 renderItem={({ item }) => (
@@ -104,7 +110,8 @@ const ProductScreen = () => {
                         {item.Title && <Text>Title: {item.Title}</Text>}
                         <Text>Brand: {item.BrandName}</Text>
                         {item.Description && <Text>Description: {item.Description}</Text>}
-                        <Text>Details: {item.ProductDetail}</Text>
+                        <Text>Details: </Text>
+                        <Text>{htmlToText(item.ProductDetail)}</Text>
                         <Text>Price: £{item.SalesPrice}</Text>
                         <Text>In Stock: {item.QtyInStock}</Text>
                         <Text>On Order: {item.QtyOnOrder}</Text>
@@ -129,6 +136,9 @@ const styles = StyleSheet.create({
         justifyContent: "center", 
         alignSelf: "center", 
     },
+    FlatList:{
+      flex: 1,
+    },
     orderItem: {
         backgroundColor: '#ffffff',
         padding: 10,
@@ -136,6 +146,7 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     productItem: {
+      flex: 1,
       backgroundColor: '#ffffff',   
       padding: 15,                 
       marginBottom: 15,            
@@ -146,7 +157,9 @@ const styles = StyleSheet.create({
       shadowOffset: { width: 0, height: 2 }, 
       shadowOpacity: 0.25,         
       shadowRadius: 3.84,          
-      elevation: 5                 
+      elevation: 5,  
+      overflow:'hidden',   
+      height:700,           
     },
     productImage: {
       width: '100%',       
