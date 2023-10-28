@@ -1,11 +1,14 @@
-import { StyleSheet, Text, TextInput, Button, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, TextInput, Button, SafeAreaView, Touchable } from 'react-native';
 import React, { useState} from 'react';
 import { setCustomerId } from '../components/CustomerID';
 import { useNavigation } from '@react-navigation/native';
+import { Input } from '../node_modules/react-native-elements/dist/index';
 
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [isSecureEntry, setIsSecureEntry] = useState(true);
     const navigation = useNavigation();
 
     return (
@@ -16,22 +19,37 @@ const LoginScreen = () => {
                 value={email}
                 placeholder='Enter username'
                 onChangeText={setEmail} />
+
+            <Input
+                label="Password"
+                style={styles.textInput}
+                secureTextEntry={isSecureEntry}
+                icon={<TouchableOpacity onPress={() => {
+                    setIsSecureEntry((prev) => !prev)
+                }}>
+                    <Text>{isSecureEntry ? 'Show' : 'Hide'}</Text>
+                    </TouchableOpacity>}
+                iconPosition="right"
+                value={email}
+                placeholder='Enter Password'
+                onChangeText={setpassword} />
+
             <Button
-                onPress={() => { this.onPress(navigation, email); setEmail('') } }
+                onPress={() => { this.onPress(navigation, email, password); setEmail(''); setPassword('') }}
                 title='Log in'
-                />
+            />
         </SafeAreaView>
-    )
-}
+    );
+};
 
 
-onPress = async (navigation, email) => {
+onPress = async (navigation, email, password) => {
     let customer = await checkemail(email);
-    if (customer != -1 && customer.length != 0) {
+    if (customer != -1 && customer.length != 0 && password == 'Password') {
         setCustomerId(customer.Id);
         navigation.navigate("HomeScreen");
-    }
-}
+    };
+};
 
 
 
@@ -46,7 +64,7 @@ let checkemail = async (userEmail) => {
     } catch (error) {
         console.log("Json fetch failed, ", error);
         return -1;
-    }
+    };
 };
 
 
