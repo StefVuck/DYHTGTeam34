@@ -32,3 +32,5 @@ const ProductScreen = () => {
     </View>
   )
 }
+
+export default ProductScreen;
