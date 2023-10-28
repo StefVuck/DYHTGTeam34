@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, ActivityIndicator, StyleSheet, FlatList, Image, SafeAreaView, Dimensions } from 'react-native';
+import { ScreenHeight, ScreenWidth } from 'react-native-elements/dist/helpers';
 import tw from "tailwind-react-native-classnames";
 const ProductScreen = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [listHeight, setListHeight] = useState(ScreenHeight);
 
 
   const getBodyShape = (BodyShapeEnum) => {
@@ -178,8 +180,7 @@ const styles = StyleSheet.create({
       justifyContent: "flex-start",
       marginTop: 10,
     },
-  
-  
+
 });
 
 export default ProductScreen;
