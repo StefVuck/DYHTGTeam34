@@ -13,7 +13,7 @@ const LoginScreen = () => {
             <View style={styles.centered}>
                 <Text>Login</Text>
                 <TextInput
-                    style={styles.textInput}
+                    style={[styles.textInput, {width: Dimensions.get('window').width/1.1}]}
                     value={email}
                     placeholder='Enter email'
                     onChangeText={setEmail} />
@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
     centered: {
         position: "absolute",
         top: Dimensions.get('window').height/2.5,
-        left: Dimensions.get('window').width/3,
         alignItems: "center",
     }
 });
