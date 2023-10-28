@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, ActivityIndicator, StyleSheet, FlatList, Image, SafeAreaView, Dimensions } from 'react-native';
 import { ScreenHeight, ScreenWidth } from 'react-native-elements/dist/helpers';
 import tw from "tailwind-react-native-classnames";
-
 const ProductScreen = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -147,17 +146,36 @@ const styles = StyleSheet.create({
       shadowOffset: { width: 0, height: 2 }, 
       shadowOpacity: 0.25,         
       shadowRadius: 3.84,          
-      elevation: 5,  
-      height: ScreenHeight - 30,      
-        
-  },
-  productImage: {
-    width: '100%',       
-    height: 200,         
-    resizeMode: 'contain', 
-    borderRadius: 8,     
-    marginBottom: 10     
-},
+      elevation: 5                 
+    },
+    productImage: {
+      width: '100%',       
+      height: 200,
+      resizeMode: 'contain', 
+      borderRadius: 8,     
+      marginBottom: 10,
+    },
+    frame1: {
+      overflow: "hidden",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "flex-start",
+    },
+    frame2: {
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "flex-start",
+      marginTop: 10,
+    },
+    frame3: {
+      height: 118,
+      overflow: "hidden",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "flex-start",
+      marginTop: 10,
+    },
+
 });
 
 export default ProductScreen;
