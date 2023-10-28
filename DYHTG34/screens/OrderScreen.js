@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, FlatList, Text, View, ActivityIndicator, SafeAreaView , Image} from 'react-native';
+import { StyleSheet, FlatList, Text, View, ActivityIndicator, SafeAreaView , Image, Button} from 'react-native';
+import { TextInput, } from 'react-native-gesture-handler';
 import tw from "tailwind-react-native-classnames";
 
 const OrderScreen = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const DUMMY_CUSTOMER_ID = 6890;  
+    const [customerID, setCustomerID] = useState(6890);  
+    const [text, setText] = useState(6890);
 
     const getOrderStatus = (statusEnum) => {
         const orderStatusMap = {
@@ -34,13 +36,18 @@ const OrderScreen = () => {
         try {
             let response = await fetch('https://www.guitarguitar.co.uk/hackathon/orders/');
             let jsonData = await response.json();
-            let customerOrders = jsonData.filter(order => order.CustomerId === DUMMY_CUSTOMER_ID);
+            let customerOrders = jsonData.filter(order => order.CustomerId === customerID);
             setData(customerOrders);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
         setLoading(false);
     };
+
+    const filterOrders = async () => {
+        setCustomerID(text);
+        fetchOrdersForCustomer();
+    }
 
     useEffect(() => {
         fetchOrdersForCustomer();
@@ -52,40 +59,44 @@ const OrderScreen = () => {
             {loading ? (
                 <ActivityIndicator size="large" color="#0000ff" />
             ) : (
-                <FlatList
-                    data={data}
-                    keyExtractor={(item) => item.Id.toString()}
-                    renderItem={({ item }) => (
-                        <View>
-                            {JSON.stringify(item) === '{}' ? (
-                                <Text> Loading... </Text>
-                            ) : (
+                <View>
+                    <TextInput placeholder="Enter customer ID" onChangeText={newText=>setText(newText)} defaultValue={text} />
+                    <Button title="Search" onPress={filterOrders}/>
+                    <FlatList
+                        data={data}
+                        keyExtractor={(item) => item.Id.toString()}
+                        renderItem={({ item }) => (
                             <View>
-                                <View style={styles.orderItem}>
-                                    <View style={styles.productInfo}>
-                                        { item.Products.map((product) => (
-                                            <View style={styles.productInfo}>
-                                                {product.PictureMain &&
-                                                <Image source={{url: product.PictureMain}} />
-                                                                }
-                                                <Text> &#x2022; {product.ItemName}</Text>
-                                                <Text style={{paddingLeft:20}}>Link</Text>
-                                            </View>
-                                          ))}
-                                    </View>
-                                    <View style={styles.dateInfo}>
-                                        <Text style={{flexDirection: 'column'}}>{'\n'}Purchased on {formatDate(item.DateCreated)}{'\n'}</Text>
-                                    </View>
-                                    <View style={styles.mainInfo}>
-                                        <Text style={styles.important}>Order {getOrderStatus(item.OrderStatus)}</Text>
-                                        <Text style={{paddingLeft: 20}}>£{item.OrderTotal}</Text>
+                                {JSON.stringify(item) === '{}' ? (
+                                    <Text> Loading... </Text>
+                                ) : (
+                                <View>
+                                    <View style={styles.orderItem}>
+                                        <View style={styles.productInfo}>
+                                            { item.Products.map((product) => (
+                                                <View style={styles.productInfo}>
+                                                    {product.PictureMain &&
+                                                    <Image source={{url: product.PictureMain}} />
+                                                                    }
+                                                    <Text> &#x2022; {product.ItemName}</Text>
+                                                    <Text style={{paddingLeft:20}}>Link</Text>
+                                                </View>
+                                              ))}
+                                        </View>
+                                        <View style={styles.dateInfo}>
+                                            <Text style={{flexDirection: 'column'}}>{'\n'}Purchased on {formatDate(item.DateCreated)}{'\n'}</Text>
+                                        </View>
+                                        <View style={styles.mainInfo}>
+                                            <Text style={styles.important}>Order {getOrderStatus(item.OrderStatus)}</Text>
+                                            <Text style={{paddingLeft: 20}}>£{item.OrderTotal}</Text>
+                                        </View>
                                     </View>
                                 </View>
+                                )}
                             </View>
-                            )}
-                        </View>
                     )}
-                />
+                    />
+                </View>
             )}
         </View>
         </SafeAreaView> 
