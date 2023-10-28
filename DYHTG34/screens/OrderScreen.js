@@ -70,7 +70,7 @@ const OrderScreen = () => {
                                     <View style={styles.productInfo}>
                                         <Text>Products:</Text>
                                         { item.Products.map((product) => (
-                                            <Text>{product.ItemName}</Text>
+                                            <Text> &#x2022; {product.ItemName}</Text>
                                           ))}
                                     </View>
                                     <View style={styles.shippingInfo}>
