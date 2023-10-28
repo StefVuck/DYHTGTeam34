@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, ActivityIndicator, StyleSheet, FlatList, Image, SafeAreaView, Dimensions } from 'react-native';
 import { ScreenHeight, ScreenWidth } from 'react-native-elements/dist/helpers';
 import tw from "tailwind-react-native-classnames";
+
+
+import { htmlToText } from 'html-to-text';
+import RenderHtml from 'react-native-render-html';
+
 const ProductScreen = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -67,13 +72,14 @@ const ProductScreen = () => {
     };
     return PickupEnumMap[PickupEnum];
   };
-
+  
 
   const fetchProducts = async () => {
     setLoading(true);
     try {
       let response = await fetch('https://www.guitarguitar.co.uk/hackathon/products');
       let products = await response.json();
+      console.log(ScreenHeight);
       setData(products);
     }
     catch(error) {
@@ -94,26 +100,25 @@ const ProductScreen = () => {
         ) : (
             <FlatList
                 data={data}
+                style={styles.FlatList}
                 keyExtractor={(item) => item.SKU_ID}
                 pagingEnabled
                 renderItem={({ item }) => (
                     <View style={styles.productItem}>
                         <Image source={{ uri: item.PictureMain }} style={styles.productImage} />
-                        <View style={styles.frame1}>
-                          <Text>Product ID: {item.SKU_ID}</Text>
-                          <Text>Name: {item.ItemName}</Text>
-                        </View>
-                
-                        <View style={styles.frame2}>
-                          <Text>Title: {item.Title}</Text>
-                          <Text>Brand: {item.BrandName}</Text>
-                        </View>
-                        
-                        <View style={styles.frame3}>
-                          <Text>Price: £{item.SalesPrice}</Text>
-                          <Text>In Stock: {item.QtyInStock}</Text>
-                          <Text>On Order: {item.QtyOnOrder}</Text>
-                        </View>     
+                        <Text>Product ID: {item.SKU_ID}</Text>
+                        <Text>Name: {item.ItemName}</Text>
+                        {item.Title && <Text>Title: {item.Title}</Text>}
+                        <Text>Brand: {item.BrandName}</Text>
+                        {item.Description && <Text>Description: {item.Description}</Text>}
+                        <Text>Details: </Text>
+                        <Text>{htmlToText(item.ProductDetail)}</Text>
+                        <Text>Price: £{item.SalesPrice}</Text>
+                        <Text>In Stock: {item.QtyInStock}</Text>
+                        <Text>On Order: {item.QtyOnOrder}</Text>
+                        {item.ColorOption && <Text>Colour: {getColor(item.ColourOption)}</Text>}
+                        {item.ShapeOption && <Text>Body Shape: {getBodyShape(item.ShapeOption)}</Text>}
+                        {item.PickupOption && <Text>Pickup: {getPickup(item.PickupOption)}</Text>}
                     </View>
                 )}
             />
@@ -126,14 +131,15 @@ const ProductScreen = () => {
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 10,
-        backgroundColor: '#f5f5f5',
-        alignItems: "center", 
-        justifyContent: "center", 
-        alignSelf: "center", 
-    },
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#f5f5f5',
+    alignItems: "center", 
+    justifyContent: "center", 
+    alignSelf: "center", 
+},
+
     orderItem: {
         backgroundColor: '#ffffff',
         padding: 10,
@@ -141,9 +147,10 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     productItem: {
-      height: windowHeight,
-      width: windowWidth * 0.9,
+      flex: 1,
       backgroundColor: '#ffffff',   
+      padding: 15,
+      borderRadius:20,
       marginBottom: 15,            
       borderColor: '#ddd',         
       borderWidth: 1,              
@@ -151,7 +158,8 @@ const styles = StyleSheet.create({
       shadowOffset: { width: 0, height: 2 }, 
       shadowOpacity: 0.25,         
       shadowRadius: 3.84,          
-      elevation: 5                 
+      elevation: 5,  
+      height:ScreenHeight*0.86,           
     },
     productImage: {
       width: '100%',       
