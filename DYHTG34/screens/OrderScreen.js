@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, FlatList, Text, View, ActivityIndicator, SafeAreaView } from 'react-native';
+import { StyleSheet, FlatList, Text, View, ActivityIndicator, SafeAreaView , Image} from 'react-native';
 import tw from "tailwind-react-native-classnames";
 
 const OrderScreen = () => {
@@ -65,25 +65,20 @@ const OrderScreen = () => {
                                     <View style={styles.productInfo}>
                                         { item.Products.map((product) => (
                                             <View style={styles.productInfo}>
+                                                {product.PictureMain &&
+                                                <Image source={{url: product.PictureMain}} />
+                                                                }
                                                 <Text> &#x2022; {product.ItemName}</Text>
                                                 <Text style={{paddingLeft:20}}>Link</Text>
                                             </View>
                                           ))}
                                     </View>
-
-                                    <View style={styles.mainInfo}>
-                                        <Text style={styles.important}>Order ID: {item.Id}</Text>
-                                        <Text style={{paddingLeft: 20}}>£{item.OrderTotal}</Text>
+                                    <View style={styles.dateInfo}>
+                                        <Text style={{flexDirection: 'column'}}>{'\n'}Purchased on {formatDate(item.DateCreated)}{'\n'}</Text>
                                     </View>
-                                    <Text style={{flexDirection: 'column'}}>{'\n'}{formatDate(item.DateCreated)}{'\n'}</Text>
-                                    <View style={styles.shippingInfo}>
-                                        <Text>Shipping Address: </Text>
-                                        <Text>   &#x2022; {item.ShippingAddress.street_address},</Text>
-                                        <Text>   &#x2022; {item.ShippingAddress.street_name},</Text>
-                                        <Text>   &#x2022; {item.ShippingAddress.city},</Text>
-                                        <Text>   &#x2022; {item.ShippingAddress.zip_code},</Text>
-                                        <Text>   &#x2022; {item.ShippingAddress.country}</Text>
-                                        <Text>Status: {getOrderStatus(item.OrderStatus)}</Text>
+                                    <View style={styles.mainInfo}>
+                                        <Text style={styles.important}>Order {getOrderStatus(item.OrderStatus)}</Text>
+                                        <Text style={{paddingLeft: 20}}>£{item.OrderTotal}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -103,14 +98,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-        backgroundColor: '#f5f5f5'
+        backgroundColor: '#5fcfe3'
     },
     orderItem: {
         fontWeight: 'bold',
         backgroundColor: '#ffffff',
         padding: 10,
         marginBottom: 10,
-        borderRadius: 5,
+        borderRadius: 10,
     },
     important: {
         fontWeight: 'bold',
