@@ -45,7 +45,7 @@ const OrderScreen = () => {
     };
 
     const filterOrders = async () => {
-        setCustomerID(text);
+        setCustomerID(text.toString);
         fetchOrdersForCustomer();
     }
 
@@ -60,9 +60,11 @@ const OrderScreen = () => {
                 <ActivityIndicator size="large" color="#0000ff" />
             ) : (
                 <View>
-                    <TextInput placeholder="Enter customer ID" onChangeText={newText=>setText(newText)} defaultValue={text} />
-                    <Button title="Search" onPress={filterOrders}/>
-                    <FlatList
+                    <View style={styles.orderItem}>
+                        <TextInput placeholder="Enter customer ID" onChangeText={newText=>setText(newText.toString())} defaultValue={text} />
+                        <Button title="Search" onPress={filterOrders}/>
+                    </View>
+                        <FlatList
                         data={data}
                         keyExtractor={(item) => item.Id.toString()}
                         renderItem={({ item }) => (
