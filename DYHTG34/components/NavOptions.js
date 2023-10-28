@@ -2,6 +2,8 @@ import React from "react";
 import { FlatList, StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
 import tw from 'tailwind-react-native-classnames';
 import { Icon } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
+
 
 const data = [
     {
@@ -12,12 +14,13 @@ const data = [
     {
         id: "456",
         title: "Extra",
-        //image: ...
         screen: "ExtraScreen",
     },
 ];
 
 const NavOptions = () => {
+    const navigation = useNavigation();
+
     return (
         <FlatList
             data={data}
@@ -25,8 +28,9 @@ const NavOptions = () => {
             horizontal
             renderItem = {({item}) => (
                 <TouchableOpacity
+                    onPress={() => navigation.navigate(item.screen)} 
                     style={tw`p-3 bg-gray-200 m-2`}
-                > 
+                >
                     <Text style={tw` text-lg font-semibold`}> {item.title} </Text>
                     <Icon name="arrowright" color="black" type="antdesign" />
                 </TouchableOpacity>
@@ -36,5 +40,3 @@ const NavOptions = () => {
 };
 
 export default NavOptions;
-
-// const styles = StyleSheet.create();

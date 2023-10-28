@@ -16,11 +16,8 @@ export default function App() {
   return ( 
     <Provider store={store}>
       <NavigationContainer>
-      <SafeAreaProvider> {/* This is a wrapper for react-native-safe-area */}
+      <SafeAreaProvider> 
       
-      {/* Okay so fundamentally we have a stack that stores our
-       pages visited and upon "returning/exiting" a page pops that
-       page off the stack and returns to the last page visited before */}
       <Stack.Navigator>
         <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false,}} />
         <Stack.Screen name="OrderScreen" component={OrderScreen} options={{headerShown: false,}} />
