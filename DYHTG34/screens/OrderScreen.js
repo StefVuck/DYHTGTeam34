@@ -22,7 +22,7 @@ const OrderScreen = () => {
         const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const date = new Date(dateInput);
       
-        const day = days[date.getDay()];
+        const day = daysOfWeek[date.getDay()];
         const hours = ("0" + date.getHours()).slice(-2);
         const minutes = ("0" + date.getMinutes()).slice(-2);
       
