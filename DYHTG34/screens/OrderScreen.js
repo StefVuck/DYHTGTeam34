@@ -4,7 +4,7 @@ import { StyleSheet, FlatList, Text, View, ActivityIndicator } from 'react-nativ
 const OrderScreen = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const DUMMY_CUSTOMER_ID = 9833; 
+    const DUMMY_CUSTOMER_ID = 6890;  
 
     const getOrderStatus = (statusEnum) => {
         const orderStatusMap = {
@@ -50,12 +50,14 @@ const OrderScreen = () => {
                             <Text>Order ID: {item.Id}</Text>
                             <Text>Order Date: {item.DateCreated}</Text>
                             <Text>Order Total: £{item.OrderTotal}</Text>
+                            <Text>Products:</Text>
+                            {item.Products.map( (product, index) => ( <Text key={index}>   &#x2022; {product.ItemName}</Text> ) ) }
                             <Text>Shipping Address: </Text>
-                            <Text>   {item.ShippingAddress.street_address},</Text>
-                            <Text>   {item.ShippingAddress.street_name},</Text>
-                            <Text>   {item.ShippingAddress.city},</Text>
-                            <Text>   {item.ShippingAddress.zip_code},</Text>
-                            <Text>   {item.ShippingAddress.country}</Text>
+                            <Text>   &#x2022; {item.ShippingAddress.street_address},</Text>
+                            <Text>   &#x2022; {item.ShippingAddress.street_name},</Text>
+                            <Text>   &#x2022; {item.ShippingAddress.city},</Text>
+                            <Text>   &#x2022; {item.ShippingAddress.zip_code},</Text>
+                            <Text>   &#x2022; {item.ShippingAddress.country}</Text>
                             <Text></Text>
                             <Text>Status: {getOrderStatus(item.OrderStatus)}</Text>
                         </View>
@@ -66,6 +68,8 @@ const OrderScreen = () => {
     );
 };
 
+
+// Change Later
 const styles = StyleSheet.create({
     container: {
         flex: 1,
