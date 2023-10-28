@@ -37,9 +37,9 @@ let checkemail = async (userEmail) => {
 
     try {
         let response = await fetch('https://www.guitarguitar.co.uk/hackathon/customers/');
-        let customer = await response.json()
+        let data = await response.json()
 
-        let customerOrders = customer.filter(customer => customer.email === userEmail);
+        let customer = data.filter((customer) => customer.email == userEmail);
         return customer;
     } catch (error) {
         console.log("Json fetch failed, ", error);
