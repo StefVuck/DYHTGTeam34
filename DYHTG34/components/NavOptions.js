@@ -16,6 +16,12 @@ const data = [
         title: "Extra",
         screen: "ExtraScreen",
     },
+
+    {
+        id: "789",
+        title: "Login",
+        screen: "LoginScreen",
+    }
 ];
 
 const NavOptions = () => {
