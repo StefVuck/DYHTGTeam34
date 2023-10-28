@@ -1,5 +1,6 @@
-import { React, useState } from 'react'
-import { StyleSheet, Text, TextInput, Button, View, SafeAreaView, Image } from 'react-native';
+import { StyleSheet, Text, TextInput, Button, View, SafeAreaView, Image, ActivityIndicator, FlatList, } from 'react-native';
+import React, { useState, useEffect } from 'react';
+
 
 
 onsubmitEdit = () => {
@@ -8,6 +9,7 @@ onsubmitEdit = () => {
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('')
+
     return (
         <SafeAreaView>
             <Text>Login</Text>
@@ -24,25 +26,26 @@ const LoginScreen = () => {
     )
 }
 
-onPress = (email) => {
-    console.log(checkemail(email));
-
+onPress = async (email) => {
+    let result =  await checkemail(email);
+    console.log(result)
 }
 
 
+
 let checkemail = async (userEmail) => {
+
     try {
         let response = await fetch('https://www.guitarguitar.co.uk/hackathon/customers/');
         let customer = await response.json()
 
+        let customerOrders = customer.filter(customer => customer.email === userEmail);
         return customer;
-    }
-
-    catch (error) {
+    } catch (error) {
         console.log("Json fetch failed, ", error);
         return -1;
     }
-}
+};
 
 
 const styles = StyleSheet.create({
