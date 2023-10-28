@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, Button, SafeAreaView, Touchable } from 'react-native';
+import { StyleSheet, Text, TextInput, Button, SafeAreaView, TouchableOpacity } from 'react-native';
 import React, { useState} from 'react';
 import { setCustomerId } from '../components/CustomerID';
 import { useNavigation } from '@react-navigation/native';
@@ -15,24 +15,19 @@ const LoginScreen = () => {
         <SafeAreaView>
             <Text>Login</Text>
             <TextInput
+                label="Username"
                 style={styles.textInput}
                 value={email}
                 placeholder='Enter username'
-                onChangeText={setEmail} />
+                onChangeText={(value) => { setEmail(value) }} />
 
-            <Input
+            <TextInput
                 label="Password"
                 style={styles.textInput}
                 secureTextEntry={isSecureEntry}
-                icon={<TouchableOpacity onPress={() => {
-                    setIsSecureEntry((prev) => !prev)
-                }}>
-                    <Text>{isSecureEntry ? 'Show' : 'Hide'}</Text>
-                    </TouchableOpacity>}
-                iconPosition="right"
-                value={email}
+                value={password}
                 placeholder='Enter Password'
-                onChangeText={setpassword} />
+                onChangeText={(value) => { setPassword(value) }} />
 
             <Button
                 onPress={() => { this.onPress(navigation, email, password); setEmail(''); setPassword('') }}
