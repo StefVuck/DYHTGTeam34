@@ -36,7 +36,7 @@ const OrderScreen = () => {
         try {
             let response = await fetch('https://www.guitarguitar.co.uk/hackathon/orders/');
             let jsonData = await response.json();
-            let customerOrders = jsonData.filter(order => order.CustomerId === customerID);
+            let customerOrders = jsonData.filter(order => order.CustomerId.toString() === customerID.toString());
             setData(customerOrders);
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -45,7 +45,7 @@ const OrderScreen = () => {
     };
 
     const filterOrders = async () => {
-        setCustomerID(text.toString);
+        setCustomerID(text);
         fetchOrdersForCustomer();
     }
 
@@ -60,7 +60,7 @@ const OrderScreen = () => {
                 <ActivityIndicator size="large" color="#0000ff" />
             ) : (
                 <View>
-                    <View style={styles.orderItem}>
+                    <View style={[styles.orderItem, {marginTop:50}]}>
                         <TextInput placeholder="Enter customer ID" onChangeText={newText=>setText(newText.toString())} defaultValue={text} />
                         <Button title="Search" onPress={filterOrders}/>
                     </View>
