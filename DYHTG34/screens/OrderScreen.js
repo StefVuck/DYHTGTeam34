@@ -26,7 +26,6 @@ const OrderScreen = () => {
         const day = daysOfWeek[date.getDay()];
         const hours = ("0" + date.getHours()).slice(-2);
         const minutes = ("0" + date.getMinutes()).slice(-2);
-      
         return `${day}, ${hours}:${minutes}`;
       }
 
@@ -35,8 +34,6 @@ const OrderScreen = () => {
         try {
             let response = await fetch('https://www.guitarguitar.co.uk/hackathon/orders/');
             let jsonData = await response.json();
-
-        
             let customerOrders = jsonData.filter(order => order.CustomerId === DUMMY_CUSTOMER_ID);
             setData(customerOrders);
         } catch (error) {
@@ -58,21 +55,27 @@ const OrderScreen = () => {
                 <FlatList
                     data={data}
                     keyExtractor={(item) => item.Id.toString()}
+
                     renderItem={({ item }) => (
                         <View style={styles.orderItem}>
-                            <Text>Order ID: {item.Id}</Text>
-                            <Text>Order Date: {formatDate(item.DateCreated)}</Text>
-                            <Text>Order Total: £{item.OrderTotal}</Text>
-                            <Text>Products:</Text>
-                            {item.Products.map( (product, index) => ( <Text key={index}>   &#x2022; {product.ItemName}</Text> ) ) }
-                            <Text>Shipping Address: </Text>
-                            <Text>   &#x2022; {item.ShippingAddress.street_address},</Text>
-                            <Text>   &#x2022; {item.ShippingAddress.street_name},</Text>
-                            <Text>   &#x2022; {item.ShippingAddress.city},</Text>
-                            <Text>   &#x2022; {item.ShippingAddress.zip_code},</Text>
-                            <Text>   &#x2022; {item.ShippingAddress.country}</Text>
-                            <Text></Text>
-                            <Text>Status: {getOrderStatus(item.OrderStatus)}</Text>
+                            <View style={styles.mainInfo}>
+                                <Text style={styles.important}>Order ID: {item.Id}</Text>
+                                <Text style={{paddingLeft: 20}}>{formatDate(item.DateCreated)}</Text>
+                                <Text style={{paddingLeft: 20}}>£{item.OrderTotal}</Text>
+                            </View>
+                            <View style={styles.productInfo}>
+                                <Text>Products:</Text>
+                                {item.Products.map( (product, index) => ( <Text key={index}>   &#x2022; {product.ItemName}</Text> ) ) }
+                            </View>
+                            <View style={styles.shippingInfo}>
+                                <Text>Shipping Address: </Text>
+                                <Text>   &#x2022; {item.ShippingAddress.street_address},</Text>
+                                <Text>   &#x2022; {item.ShippingAddress.street_name},</Text>
+                                <Text>   &#x2022; {item.ShippingAddress.city},</Text>
+                                <Text>   &#x2022; {item.ShippingAddress.zip_code},</Text>
+                                <Text>   &#x2022; {item.ShippingAddress.country}</Text>
+                                <Text>Status: {getOrderStatus(item.OrderStatus)}</Text>
+                            </View>
                         </View>
                     )}
                 />
@@ -94,8 +97,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         padding: 10,
         marginBottom: 10,
-        borderRadius: 5
+        borderRadius: 5,
+    },
+    important: {
+        fontWeight: 'bold',
+    },
+    mainInfo: {
+        color: 'grey',
+        flexDirection: 'row',
     }
+
+
 });
 
 export default OrderScreen;
