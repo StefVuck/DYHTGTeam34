@@ -55,27 +55,36 @@ const OrderScreen = () => {
                 <FlatList
                     data={data}
                     keyExtractor={(item) => item.Id.toString()}
-
                     renderItem={({ item }) => (
-                        <View style={styles.orderItem}>
-                            <View style={styles.mainInfo}>
-                                <Text style={styles.important}>Order ID: {item.Id}</Text>
-                                <Text style={{paddingLeft: 20}}>{formatDate(item.DateCreated)}</Text>
-                                <Text style={{paddingLeft: 20}}>£{item.OrderTotal}</Text>
+                        <View>
+                            {JSON.stringify(item) === '{}' ? (
+                                <Text> Loading... </Text>
+                            ) : (
+                            <View>
+                                <View style={styles.orderItem}>
+                                   <View style={styles.mainInfo}>
+                                        <Text style={styles.important}>Order ID: {item.Id}</Text>
+                                        <Text style={{paddingLeft: 20}}>{formatDate(item.DateCreated)}</Text>
+                                        <Text style={{paddingLeft: 20}}>£{item.OrderTotal}</Text>
+                                    </View>
+                                    <View style={styles.productInfo}>
+                                        <Text>Products:</Text>
+                                        { item.Products.map((product) => (
+                                            <Text>{product.ItemName}</Text>
+                                          ))}
+                                    </View>
+                                    <View style={styles.shippingInfo}>
+                                        <Text>Shipping Address: </Text>
+                                        <Text>   &#x2022; {item.ShippingAddress.street_address},</Text>
+                                        <Text>   &#x2022; {item.ShippingAddress.street_name},</Text>
+                                        <Text>   &#x2022; {item.ShippingAddress.city},</Text>
+                                        <Text>   &#x2022; {item.ShippingAddress.zip_code},</Text>
+                                        <Text>   &#x2022; {item.ShippingAddress.country}</Text>
+                                        <Text>Status: {getOrderStatus(item.OrderStatus)}</Text>
+                                    </View>
+                                </View>
                             </View>
-                            <View style={styles.productInfo}>
-                                <Text>Products:</Text>
-                                {item.Products.map( (product, index) => ( <Text key={index}>   &#x2022; {product.ItemName}</Text> ) ) }
-                            </View>
-                            <View style={styles.shippingInfo}>
-                                <Text>Shipping Address: </Text>
-                                <Text>   &#x2022; {item.ShippingAddress.street_address},</Text>
-                                <Text>   &#x2022; {item.ShippingAddress.street_name},</Text>
-                                <Text>   &#x2022; {item.ShippingAddress.city},</Text>
-                                <Text>   &#x2022; {item.ShippingAddress.zip_code},</Text>
-                                <Text>   &#x2022; {item.ShippingAddress.country}</Text>
-                                <Text>Status: {getOrderStatus(item.OrderStatus)}</Text>
-                            </View>
+                            )}
                         </View>
                     )}
                 />
@@ -106,6 +115,7 @@ const styles = StyleSheet.create({
         color: 'grey',
         flexDirection: 'row',
     }
+
 
 
 });
