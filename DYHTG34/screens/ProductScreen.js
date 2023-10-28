@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import * as React from "react";
+import { useState, useEffect } from 'react';
 import { Text, View, ActivityIndicator, StyleSheet, FlatList, Image, SafeAreaView, Dimensions } from 'react-native';
-import { ScreenHeight, ScreenWidth } from 'react-native-elements/dist/helpers';
 import tw from "tailwind-react-native-classnames";
+import { Padding, FontSize, FontFamily, Color, Border } from "../GlobalStyles";
+import { getLoyaltyLevel } from "../components/CustomerID";
 
 
 import { htmlToText } from 'html-to-text';
 import RenderHtml from 'react-native-render-html';
+import { Assets } from "@react-navigation/elements";
+// import React from 'react';
 
 const ProductScreen = () => {
   const [data, setData] = useState([]);
@@ -73,13 +77,71 @@ const ProductScreen = () => {
     return PickupEnumMap[PickupEnum];
   };
   
+  const calculateDiscountedPrice = (item) => {
+    const loyalty = getLoyaltyLevel();
 
+    switch (loyalty) {
+        case 0:
+            return item.price;
+        case 1:
+            if (item.category.substring(0, 2) === "GU") {
+                return item.price * 0.95;
+            } else {
+                return item.price;
+            }
+        case 2:
+            if (item.category.substring(0, 2) === "GU" || item.category === "ACGB") {
+                return item.price * 0.90;
+            } else {
+                return item.price;
+            }
+        case 3:
+            return item.price * 0.9;
+        default:
+            return item.price; // return the original price if the loyalty value is unexpected.
+    }
+}
+
+  const MoreLessComponent = ({ truncatedText, fullText }) => {
+    const [more, setMore] = React.useState(false);
+    return (
+      <Text>
+        {!more ? `${truncatedText}...` : fullText}
+        <TouchableOpacity onPress={() => setMore(!more)}>
+          <Text>{more ? 'less' : 'more'}</Text>
+        </TouchableOpacity>
+      </Text>
+    );
+  };
+  const MoreInfo = ({text, linesToTruncate}) => {
+    const [clippedText, setClippedText] = React.useState(false);
+    return clippedText ? (
+      <MoreLessComponent truncatedText={clippedText} fullText={text} />
+    ) : (
+      <Text
+        numberOfLines={linesToTruncate}
+        ellipsizeMode={'tail'}
+        onTextLayout={(event) => {
+          //get all lines
+          const { lines } = event.nativeEvent;
+          //get lines after it truncate
+          let text = lines
+            .splice(0, linesToTruncate)
+            .map((line) => line.text)
+            .join('');
+          //substring with some random digit, this might need more work here based on the font size
+          //
+          setClippedText(text.substr(0, text.length - 9));
+        }}>
+        {text}
+      </Text>
+    );
+  };
   const fetchProducts = async () => {
     setLoading(true);
     try {
       let response = await fetch('https://www.guitarguitar.co.uk/hackathon/products');
       let products = await response.json();
-      console.log(ScreenHeight);
       setData(products);
     }
     catch(error) {
@@ -92,61 +154,61 @@ const ProductScreen = () => {
       fetchProducts();
   }, []);
 
+  useEffect(() => {
+    console.log(data);
+}, [data]);
+
+
+
+
+  console.log(Array.isArray(data))
+  console.log(data.length)
   return (
-    <SafeAreaView style={tw`bg-white h-full`}> 
-    <View style={styles.container}>
+    <SafeAreaView style={tw`bg-blue-500 h-full`}> 
+
+      <View style={styles.container}>
         {loading ? (
-            <ActivityIndicator size="large" color="#0000ff" />
+          <ActivityIndicator size="large" color="#0000ff" />
         ) : (
-            <FlatList
-                data={data}
-                style={styles.FlatList}
-                keyExtractor={(item) => item.SKU_ID}
-                pagingEnabled
-                renderItem={({ item }) => (
-                    <View style={styles.productItem}>
-                        <Image source={{ uri: item.PictureMain }} style={styles.productImage} />
-                        <Text>Product ID: {item.SKU_ID}</Text>
-                        <Text>Name: {item.ItemName}</Text>
-                        {item.Title && <Text>Title: {item.Title}</Text>}
-                        <Text>Brand: {item.BrandName}</Text>
-                        {item.Description && <Text>Description: {item.Description}</Text>}
-                        <Text>Details: </Text>
-                        <Text>{htmlToText(item.ProductDetail)}</Text>
-                        <Text>Price: £{item.SalesPrice}</Text>
-                        <Text>In Stock: {item.QtyInStock}</Text>
-                        <Text>On Order: {item.QtyOnOrder}</Text>
-                        {item.ColorOption && <Text>Colour: {getColor(item.ColourOption)}</Text>}
-                        {item.ShapeOption && <Text>Body Shape: {getBodyShape(item.ShapeOption)}</Text>}
-                        {item.PickupOption && <Text>Pickup: {getPickup(item.PickupOption)}</Text>}
-                    </View>
-                )}
-            />
-        )}
-    </View>
+          
+          <FlatList
+            data={data}
+            style={styles.FlatList}
+            pagingEnabled
+            keyExtractor={(item) => item.SKU_ID}
+            renderItem={({ item }) => (
+              <View style={styles.productCard}>
+              <Image source = {require("../assets/logo.png")} style={styles.productLogo} />
+              <Image source={{ uri: item.PictureMain }} style={styles.productImage} />
+              <Text style={styles.brandName}>Name: {item.ItemName}</Text>
+              {item.Title && <Text style={styles.brandName}>Title: {item.Title}</Text>}
+              <Text>Brand: {item.BrandName}</Text>
+              <Text>Price: £{calculateDiscountedPrice(item)}</Text>
+              <Text>In Stock: {item.QtyInStock}</Text>
+              <Text>On Order: {item.QtyOnOrder}</Text>
+              {item.ColorOption && <Text>Colour: {getColor(item.ColourOption)}</Text>}
+              {item.ShapeOption && <Text>Body Shape: {getBodyShape(item.ShapeOption)}</Text>}
+              {item.PickupOption && <Text>Pickup: {getPickup(item.PickupOption)}</Text>}
+              {item.Description && <MoreLessComponent text={item.Description} linesToTruncate = {8}/> }
+              <Text style={styles.productDescription}>Description: {item.Description}</Text> 
+              <Text>Details: </Text>
+              <Text>{htmlToText(item.ProductDetail)}</Text>
+              </View>
+            )
+            } 
+          />
+          )}
+        </View>
+
     </SafeAreaView>
 );
 };
 
-const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: '#f5f5f5',
-    alignItems: "center", 
-    justifyContent: "center", 
-    alignSelf: "center", 
-},
+const ScreenHeight = Dimensions.get('window').height;
+const ScreenWidth = Dimensions.get('window').width;
 
-    orderItem: {
-        backgroundColor: '#ffffff',
-        padding: 10,
-        marginBottom: 10,
-        borderRadius: 5
-    },
-    productItem: {
+const styles = StyleSheet.create({
+  productCard: {
       flex: 1,
       backgroundColor: '#ffffff',   
       padding: 15,
@@ -160,35 +222,55 @@ const styles = StyleSheet.create({
       shadowRadius: 3.84,          
       elevation: 5,  
       height:ScreenHeight*0.86,           
-    },
-    productImage: {
-      width: '100%',       
-      height: 200,
-      resizeMode: 'contain', 
-      borderRadius: 8,     
-      marginBottom: 10,
-    },
-    frame1: {
-      overflow: "hidden",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "flex-start",
-    },
-    frame2: {
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "flex-start",
-      marginTop: 10,
-    },
-    frame3: {
-      height: 118,
-      overflow: "hidden",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "flex-start",
-      marginTop: 10,
-    },
+      flex: 1,
+    
+  },
+  productLogo: {
+    width: 100, 
+    height: 100, 
+    resizeMode: 'contain',
+    marginBottom: 10,
+  },
+  productImage: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'contain',
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+  productName: {
+    fontSize: 18,
+    borderWidth: 1,
+    fontWeight: 'bold',
+  },
+  brandName: {
+    fontSize: 16,
+    borderWidth: 1,
+    color: '#777',
+  },
+  productDescription: {
+    fontSize: 13,
+    borderWidth: 1,
 
+  },
+  price: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    borderWidth: 1,
+  },
+  stockStatus: {
+    fontSize: 14,
+    color: '#ff6060',
+  },
+  container: {
+    alignItems: "center", 
+    justifyContent: "center", 
+    alignSelf: "center", 
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#5fcfe3',
+  }
 });
+
 
 export default ProductScreen;

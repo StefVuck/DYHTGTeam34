@@ -28,7 +28,7 @@ const LoginScreen = () => {
 onPress = async (navigation, email) => {
     let customer = await checkemail(email);
     if (customer != -1 && customer.length != 0) {
-        setCustomerId(customer.Id);
+        setCustomerId(customer);
         navigation.navigate("HomeScreen");
     }
 }
