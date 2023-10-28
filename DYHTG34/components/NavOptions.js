@@ -16,8 +16,13 @@ const data = [
         title: "Extra",
         screen: "ExtraScreen",
     },
+
     {
         id: "789",
+        title: "Login",
+        screen: "LoginScreen",
+    {
+        id: "912",
         title: "Products",
         screen: "ProductScreen",
     }
