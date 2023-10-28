@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, Button, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, TextInput, Button, SafeAreaView ,View, Dimensions} from 'react-native';
 import React, { useState} from 'react';
 import { setCustomerId } from '../components/CustomerID';
 import { useNavigation } from '@react-navigation/native';
@@ -10,16 +10,18 @@ const LoginScreen = () => {
 
     return (
         <SafeAreaView>
-            <Text>Login</Text>
-            <TextInput
-                style={styles.textInput}
-                value={email}
-                placeholder='Enter email'
-                onChangeText={setEmail} />
-            <Button
-                onPress={() => { this.onPress(navigation, email); setEmail('') } }
-                title='Log in'
-                />
+            <View style={styles.centered}>
+                <Text>Login</Text>
+                <TextInput
+                    style={styles.textInput}
+                    value={email}
+                    placeholder='Enter email'
+                    onChangeText={setEmail} />
+                <Button
+                    onPress={() => { this.onPress(navigation, email); setEmail('') } }
+                    title='Log in'
+                    />
+            </View>
         </SafeAreaView>
     )
 }
@@ -56,6 +58,12 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: 'blue',
         margin: 10
+    },
+    centered: {
+        position: "absolute",
+        top: Dimensions.get('window').height/2.5,
+        left: Dimensions.get('window').width/3,
+        alignItems: "center",
     }
 });
 
