@@ -127,6 +127,8 @@ const ProductScreen = () => {
 );
 };
 
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -148,9 +150,7 @@ const styles = StyleSheet.create({
     productItem: {
       flex: 1,
       backgroundColor: '#ffffff',   
-      padding: 15,                 
       marginBottom: 15,            
-      borderRadius: 10,            
       borderColor: '#ddd',         
       borderWidth: 1,              
       shadowColor: '#000',         
