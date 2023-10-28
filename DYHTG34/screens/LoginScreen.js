@@ -1,14 +1,13 @@
-import { StyleSheet, Text, TextInput, Button, View, SafeAreaView, Image, ActivityIndicator, FlatList, } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, TextInput, Button, SafeAreaView} from 'react-native';
+import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 
 
-onsubmitEdit = () => {
-    checkemail(email)
-}
 
 const LoginScreen = () => {
-    const [email, setEmail] = useState('')
+    const [email, setEmail] = useState('');
+    const navigation = useNavigation();
 
     return (
         <SafeAreaView>
@@ -19,16 +18,20 @@ const LoginScreen = () => {
                 placeholder='Enter username'
                 onChangeText={setEmail} />
             <Button
-                onPress={() => { this.onPress(email); setEmail('') } }
+                onPress={() => { this.onPress(navigation, email); setEmail('') } }
                 title='Log in'
                 />
         </SafeAreaView>
     )
 }
 
-onPress = async (email) => {
-    let result =  await checkemail(email);
-    console.log(result)
+onPress = async (navigation, email) => {
+    let customer = await checkemail(email);
+    if (customer.length != 0) {
+        console.log("hello");
+        navigation.navigate("HomeScreen");
+    }
+    console.log(result);
 }
 
 
@@ -37,7 +40,7 @@ let checkemail = async (userEmail) => {
 
     try {
         let response = await fetch('https://www.guitarguitar.co.uk/hackathon/customers/');
-        let data = await response.json()
+        let data = await response.json();
 
         let customer = data.filter((customer) => customer.email == userEmail);
         return customer;
