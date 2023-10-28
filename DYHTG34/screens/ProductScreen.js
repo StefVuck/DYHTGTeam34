@@ -127,7 +127,27 @@ const styles = StyleSheet.create({
         padding: 10,
         marginBottom: 10,
         borderRadius: 5
-    }
+    },
+    productItem: {
+      backgroundColor: '#ffffff',   
+      padding: 15,                 
+      marginBottom: 15,            
+      borderRadius: 10,            
+      borderColor: '#ddd',         
+      borderWidth: 1,              
+      shadowColor: '#000',         
+      shadowOffset: { width: 0, height: 2 }, 
+      shadowOpacity: 0.25,         
+      shadowRadius: 3.84,          
+      elevation: 5                 
+  },
+  productImage: {
+    width: '100%',       
+    height: 200,         
+    resizeMode: 'contain', 
+    borderRadius: 8,     
+    marginBottom: 10     
+},
 });
 
 export default ProductScreen;
