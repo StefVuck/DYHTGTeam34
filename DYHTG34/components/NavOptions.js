@@ -27,6 +27,11 @@ const data = [
         title: "Products",
         screen: "ProductScreen",
     },
+    {
+        id: "6969",
+        title: "Search",
+        screen: "SearchScreen",
+    }
 ];
 
 const NavOptions = () => {
