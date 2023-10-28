@@ -5,8 +5,8 @@ import NavOptions from "../components/NavOptions";
 
 const HomeScreen = () => {
   return (
-    <SafeAreaView style={tw`bg-white h-full`}>
-      <View style={tw`p-5`}>
+    <SafeAreaView style={tw`bg-white h-full`}> 
+      <View style={tw`p-5`}> 
         <Text> Hello! </Text>
 
         <Image style={{
@@ -15,14 +15,13 @@ const HomeScreen = () => {
           resizeMode: "contain",
         }}
         source = {{uri: "https://images.guitarguitar.co.uk/cdn/small/global/logos/secondary.png"}} />
-      
-      <NavOptions />
+      <NavOptions />  
       </View>
     </SafeAreaView>
   );
 };
 
-export default HomeScreen;
+export default HomeScreen; 
 
 const styles = StyleSheet.create({
   text: {
