@@ -16,6 +16,11 @@ const data = [
         title: "Extra",
         screen: "ExtraScreen",
     },
+    {
+        id: "789",
+        title: "Products",
+        screen: "ProductScreen",
+    }
 ];
 
 const NavOptions = () => {

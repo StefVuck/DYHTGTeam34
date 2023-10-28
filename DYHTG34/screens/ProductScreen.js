@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { Text, View, ActivityIndicator, StyleSheet } from 'react-native';
 
 const ProductScreen = () => {
   const [data, setData] = useState([]);
@@ -23,14 +23,28 @@ const ProductScreen = () => {
   }, []);
 
   return (
-    <View style={style.container}>
+    <View style={styles.container}>
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
         <Text> Loaded </Text> // make this loop through every product and display a product component
       )}
     </View>
-  )
-}
+  );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 10,
+        backgroundColor: '#f5f5f5'
+    },
+    orderItem: {
+        backgroundColor: '#ffffff',
+        padding: 10,
+        marginBottom: 10,
+        borderRadius: 5
+    }
+});
 
 export default ProductScreen;
