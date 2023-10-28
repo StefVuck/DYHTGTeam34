@@ -1,8 +1,7 @@
-import { StyleSheet, Text, TextInput, Button, SafeAreaView} from 'react-native';
-import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, Button, SafeAreaView } from 'react-native';
+import React, { useState} from 'react';
+import { setCustomerId } from '../components/CustomerID';
 import { useNavigation } from '@react-navigation/native';
-
-
 
 
 const LoginScreen = () => {
@@ -25,13 +24,13 @@ const LoginScreen = () => {
     )
 }
 
+
 onPress = async (navigation, email) => {
     let customer = await checkemail(email);
-    if (customer.length != 0) {
-        console.log("hello");
+    if (customer != -1 && customer.length != 0) {
+        setCustomerId(customer.Id);
         navigation.navigate("HomeScreen");
     }
-    console.log(result);
 }
 
 
@@ -42,7 +41,7 @@ let checkemail = async (userEmail) => {
         let response = await fetch('https://www.guitarguitar.co.uk/hackathon/customers/');
         let data = await response.json();
 
-        let customer = data.filter((customer) => customer.email == userEmail);
+        let customer = data.find((customer) => customer.email == userEmail);
         return customer;
     } catch (error) {
         console.log("Json fetch failed, ", error);
