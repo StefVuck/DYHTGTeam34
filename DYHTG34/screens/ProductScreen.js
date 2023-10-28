@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, ActivityIndicator, StyleSheet, FlatList, Image } from 'react-native';
+import { Text, View, ActivityIndicator, StyleSheet, FlatList, Image, SafeAreaView } from 'react-native';
+import tw from "tailwind-react-native-classnames";
 
 const ProductScreen = () => {
   const [data, setData] = useState([]);
@@ -85,6 +86,7 @@ const ProductScreen = () => {
   }, []);
 
   return (
+    <SafeAreaView style={tw`bg-white h-full`}> 
     <View style={styles.container}>
         {loading ? (
             <ActivityIndicator size="large" color="#0000ff" />
@@ -92,27 +94,29 @@ const ProductScreen = () => {
             <FlatList
                 data={data}
                 keyExtractor={(item) => item.SKU_ID}
+                pagingEnabled
                 renderItem={({ item }) => (
                     <View style={styles.productItem}>
                         <Image source={{ uri: item.PictureMain }} style={styles.productImage} />
                         <Text>Product ID: {item.SKU_ID}</Text>
                         <Text>Name: {item.ItemName}</Text>
-                        <Text>Title: {item.Title}</Text>
+                        {item.Title && <Text>Title: {item.Title}</Text>}
                         <Text>Brand: {item.BrandName}</Text>
-                        <Text>Description: {item.Description}</Text>
+                        {item.Description && <Text>Description: {item.Description}</Text>}
                         <Text>Details: {item.ProductDetail}</Text>
                         <Text>Price: £{item.SalesPrice}</Text>
                         <Text>In Stock: {item.QtyInStock}</Text>
                         <Text>On Order: {item.QtyOnOrder}</Text>
-                        <Text>Colour: {getColor(item.ColourOption)}</Text>
-                        <Text>Body Shape: {getBodyShape(item.ShapeOption)}</Text>
-                        <Text>Pickup: {getPickup(item.PickupOption)}</Text>
+                        {item.ColorOption && <Text>Colour: {getColor(item.ColourOption)}</Text>}
+                        {item.ShapeOption && <Text>Body Shape: {getBodyShape(item.ShapeOption)}</Text>}
+                        {item.PickupOption && <Text>Pickup: {getPickup(item.PickupOption)}</Text>}
                         <Text>{'\n'}{'\n'}</Text>
                     </View>
                 )}
             />
         )}
     </View>
+    </SafeAreaView>
 );
 };
 
@@ -120,7 +124,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-        backgroundColor: '#f5f5f5'
+        backgroundColor: '#f5f5f5',
+        alignItems: "center", 
+        justifyContent: "center", 
+        alignSelf: "center", 
     },
     orderItem: {
         backgroundColor: '#ffffff',
