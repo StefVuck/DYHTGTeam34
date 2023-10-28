@@ -79,6 +79,7 @@ const ProductScreen = () => {
     try {
       let response = await fetch('https://www.guitarguitar.co.uk/hackathon/products');
       let products = await response.json();
+      console.log(ScreenHeight);
       setData(products);
     }
     catch(error) {
@@ -130,17 +131,15 @@ const ProductScreen = () => {
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 10,
-        backgroundColor: '#f5f5f5',
-        alignItems: "center", 
-        justifyContent: "center", 
-        alignSelf: "center", 
-    },
-    FlatList:{
-      flex: 1,
-    },
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#f5f5f5',
+    alignItems: "center", 
+    justifyContent: "center", 
+    alignSelf: "center", 
+},
+
     orderItem: {
         backgroundColor: '#ffffff',
         padding: 10,
@@ -150,6 +149,8 @@ const styles = StyleSheet.create({
     productItem: {
       flex: 1,
       backgroundColor: '#ffffff',   
+      padding: 15,
+      borderRadius:20,
       marginBottom: 15,            
       borderColor: '#ddd',         
       borderWidth: 1,              
@@ -158,8 +159,7 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.25,         
       shadowRadius: 3.84,          
       elevation: 5,  
-      overflow:'hidden',   
-      height:700,           
+      height:ScreenHeight*0.86,           
     },
     productImage: {
       width: '100%',       
