@@ -62,17 +62,20 @@ const OrderScreen = () => {
                             ) : (
                             <View>
                                 <View style={styles.orderItem}>
-                                   <View style={styles.mainInfo}>
-                                        <Text style={styles.important}>Order ID: {item.Id}</Text>
-                                        <Text style={{paddingLeft: 20}}>{formatDate(item.DateCreated)}</Text>
-                                        <Text style={{paddingLeft: 20}}>£{item.OrderTotal}</Text>
-                                    </View>
                                     <View style={styles.productInfo}>
-                                        <Text>Products:</Text>
                                         { item.Products.map((product) => (
-                                            <Text> &#x2022; {product.ItemName}</Text>
+                                            <View style={styles.productInfo}>
+                                                <Text> &#x2022; {product.ItemName}</Text>
+                                                <Text style={{paddingLeft:20}}>Link</Text>
+                                            </View>
                                           ))}
                                     </View>
+
+                                    <View style={styles.mainInfo}>
+                                        <Text style={styles.important}>Order ID: {item.Id}</Text>
+                                        <Text style={{paddingLeft: 20}}>£{item.OrderTotal}</Text>
+                                    </View>
+                                    <Text style={{flexDirection: 'column'}}>{'\n'}{formatDate(item.DateCreated)}{'\n'}</Text>
                                     <View style={styles.shippingInfo}>
                                         <Text>Shipping Address: </Text>
                                         <Text>   &#x2022; {item.ShippingAddress.street_address},</Text>
@@ -103,6 +106,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5'
     },
     orderItem: {
+        fontWeight: 'bold',
         backgroundColor: '#ffffff',
         padding: 10,
         marginBottom: 10,
@@ -114,6 +118,16 @@ const styles = StyleSheet.create({
     mainInfo: {
         color: 'grey',
         flexDirection: 'row',
+        justifyContent: 'flex-start',
+        margin: 10,
+        marginLeft: 0,
+    },
+
+    productInfo: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        margin: 10,
+        marginLeft: 0,
     }
 
 
