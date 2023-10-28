@@ -21,11 +21,12 @@ const data = [
         id: "789",
         title: "Login",
         screen: "LoginScreen",
+    },
     {
         id: "912",
         title: "Products",
         screen: "ProductScreen",
-    }
+    },
 ];
 
 const NavOptions = () => {
