@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, ActivityIndicator, StyleSheet, FlatList, Image, SafeAreaView } from 'react-native';
+import { Text, View, ActivityIndicator, StyleSheet, FlatList, Image, SafeAreaView, Dimensions } from 'react-native';
 import tw from "tailwind-react-native-classnames";
-
 const ProductScreen = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -98,18 +97,21 @@ const ProductScreen = () => {
                 renderItem={({ item }) => (
                     <View style={styles.productItem}>
                         <Image source={{ uri: item.PictureMain }} style={styles.productImage} />
-                        <Text>Product ID: {item.SKU_ID}</Text>
-                        <Text>Name: {item.ItemName}</Text>
-                        {item.Title && <Text>Title: {item.Title}</Text>}
-                        <Text>Brand: {item.BrandName}</Text>
-                        {item.Description && <Text>Description: {item.Description}</Text>}
-                        <Text>Details: {item.ProductDetail}</Text>
-                        <Text>Price: £{item.SalesPrice}</Text>
-                        <Text>In Stock: {item.QtyInStock}</Text>
-                        <Text>On Order: {item.QtyOnOrder}</Text>
-                        {item.ColorOption && <Text>Colour: {getColor(item.ColourOption)}</Text>}
-                        {item.ShapeOption && <Text>Body Shape: {getBodyShape(item.ShapeOption)}</Text>}
-                        {item.PickupOption && <Text>Pickup: {getPickup(item.PickupOption)}</Text>}
+                        <View style={styles.frame1}>
+                          <Text>Product ID: {item.SKU_ID}</Text>
+                          <Text>Name: {item.ItemName}</Text>
+                        </View>
+                
+                        <View style={styles.frame2}>
+                          <Text>Title: {item.Title}</Text>
+                          <Text>Brand: {item.BrandName}</Text>
+                        </View>
+                        
+                        <View style={styles.frame3}>
+                          <Text>Price: £{item.SalesPrice}</Text>
+                          <Text>In Stock: {item.QtyInStock}</Text>
+                          <Text>On Order: {item.QtyOnOrder}</Text>
+                        </View>     
                         <Text>{'\n'}{'\n'}</Text>
                     </View>
                 )}
@@ -147,14 +149,36 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.25,         
       shadowRadius: 3.84,          
       elevation: 5                 
-  },
-  productImage: {
-    width: '100%',       
-    height: 200,         
-    resizeMode: 'contain', 
-    borderRadius: 8,     
-    marginBottom: 10     
-},
+    },
+    productImage: {
+      width: '100%',       
+      height: 200,
+      resizeMode: 'contain', 
+      borderRadius: 8,     
+      marginBottom: 10,
+    },
+    frame1: {
+      overflow: "hidden",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "flex-start",
+    },
+    frame2: {
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "flex-start",
+      marginTop: 10,
+    },
+    frame3: {
+      height: 118,
+      overflow: "hidden",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "flex-start",
+      marginTop: 10,
+    },
+  
+  
 });
 
 export default ProductScreen;
