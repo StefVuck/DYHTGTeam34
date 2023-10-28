@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, ActivityIndicator, StyleSheet, FlatList, Image, SafeAreaView } from 'react-native';
+import { Text, View, ActivityIndicator, StyleSheet, FlatList, Image, SafeAreaView, Dimensions } from 'react-native';
+import { ScreenHeight, ScreenWidth } from 'react-native-elements/dist/helpers';
 import tw from "tailwind-react-native-classnames";
 
 const ProductScreen = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [listHeight, setListHeight] = useState(ScreenHeight);
 
 
   const getBodyShape = (BodyShapeEnum) => {
@@ -110,7 +112,6 @@ const ProductScreen = () => {
                         {item.ColorOption && <Text>Colour: {getColor(item.ColourOption)}</Text>}
                         {item.ShapeOption && <Text>Body Shape: {getBodyShape(item.ShapeOption)}</Text>}
                         {item.PickupOption && <Text>Pickup: {getPickup(item.PickupOption)}</Text>}
-                        <Text>{'\n'}{'\n'}</Text>
                     </View>
                 )}
             />
@@ -146,7 +147,9 @@ const styles = StyleSheet.create({
       shadowOffset: { width: 0, height: 2 }, 
       shadowOpacity: 0.25,         
       shadowRadius: 3.84,          
-      elevation: 5                 
+      elevation: 5,  
+      height: ScreenHeight - 30,      
+        
   },
   productImage: {
     width: '100%',       

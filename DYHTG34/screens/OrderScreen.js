@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, FlatList, Text, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, FlatList, Text, View, ActivityIndicator, SafeAreaView } from 'react-native';
+import tw from "tailwind-react-native-classnames";
 
 const OrderScreen = () => {
     const [data, setData] = useState([]);
@@ -26,7 +27,7 @@ const OrderScreen = () => {
         const hours = ("0" + date.getHours()).slice(-2);
         const minutes = ("0" + date.getMinutes()).slice(-2);
       
-        return '${day}, ${hours}:${minutes}';
+        return `${day}, ${hours}:${minutes}`;
       }
 
     const fetchOrdersForCustomer = async () => {
@@ -49,6 +50,7 @@ const OrderScreen = () => {
     }, []);
 
     return (
+        <SafeAreaView style={tw`bg-white h-full`}> 
         <View style={styles.container}>
             {loading ? (
                 <ActivityIndicator size="large" color="#0000ff" />
@@ -76,6 +78,7 @@ const OrderScreen = () => {
                 />
             )}
         </View>
+        </SafeAreaView> 
     );
 };
 
