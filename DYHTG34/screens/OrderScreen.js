@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, FlatList, Text, View, ActivityIndicator, SafeAreaView } from 'react-native';
+import { StyleSheet, FlatList, Text, View, ActivityIndicator, SafeAreaView , Image} from 'react-native';
 import tw from "tailwind-react-native-classnames";
 
 const OrderScreen = () => {
@@ -26,7 +26,6 @@ const OrderScreen = () => {
         const day = daysOfWeek[date.getDay()];
         const hours = ("0" + date.getHours()).slice(-2);
         const minutes = ("0" + date.getMinutes()).slice(-2);
-      
         return `${day}, ${hours}:${minutes}`;
       }
 
@@ -35,8 +34,6 @@ const OrderScreen = () => {
         try {
             let response = await fetch('https://www.guitarguitar.co.uk/hackathon/orders/');
             let jsonData = await response.json();
-
-        
             let customerOrders = jsonData.filter(order => order.CustomerId === DUMMY_CUSTOMER_ID);
             setData(customerOrders);
         } catch (error) {
@@ -59,20 +56,33 @@ const OrderScreen = () => {
                     data={data}
                     keyExtractor={(item) => item.Id.toString()}
                     renderItem={({ item }) => (
-                        <View style={styles.orderItem}>
-                            <Text>Order ID: {item.Id}</Text>
-                            <Text>Order Date: {formatDate(item.DateCreated)}</Text>
-                            <Text>Order Total: £{item.OrderTotal}</Text>
-                            <Text>Products:</Text>
-                            {item.Products.map( (product, index) => ( <Text key={index}>   &#x2022; {product.ItemName}</Text> ) ) }
-                            <Text>Shipping Address: </Text>
-                            <Text>   &#x2022; {item.ShippingAddress.street_address},</Text>
-                            <Text>   &#x2022; {item.ShippingAddress.street_name},</Text>
-                            <Text>   &#x2022; {item.ShippingAddress.city},</Text>
-                            <Text>   &#x2022; {item.ShippingAddress.zip_code},</Text>
-                            <Text>   &#x2022; {item.ShippingAddress.country}</Text>
-                            <Text></Text>
-                            <Text>Status: {getOrderStatus(item.OrderStatus)}</Text>
+                        <View>
+                            {JSON.stringify(item) === '{}' ? (
+                                <Text> Loading... </Text>
+                            ) : (
+                            <View>
+                                <View style={styles.orderItem}>
+                                    <View style={styles.productInfo}>
+                                        { item.Products.map((product) => (
+                                            <View style={styles.productInfo}>
+                                                {product.PictureMain &&
+                                                <Image source={{url: product.PictureMain}} />
+                                                                }
+                                                <Text> &#x2022; {product.ItemName}</Text>
+                                                <Text style={{paddingLeft:20}}>Link</Text>
+                                            </View>
+                                          ))}
+                                    </View>
+                                    <View style={styles.dateInfo}>
+                                        <Text style={{flexDirection: 'column'}}>{'\n'}Purchased on {formatDate(item.DateCreated)}{'\n'}</Text>
+                                    </View>
+                                    <View style={styles.mainInfo}>
+                                        <Text style={styles.important}>Order {getOrderStatus(item.OrderStatus)}</Text>
+                                        <Text style={{paddingLeft: 20}}>£{item.OrderTotal}</Text>
+                                    </View>
+                                </View>
+                            </View>
+                            )}
                         </View>
                     )}
                 />
@@ -88,14 +98,35 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-        backgroundColor: '#f5f5f5'
+        backgroundColor: '#5fcfe3'
     },
     orderItem: {
+        fontWeight: 'bold',
         backgroundColor: '#ffffff',
         padding: 10,
         marginBottom: 10,
-        borderRadius: 5
+        borderRadius: 10,
+    },
+    important: {
+        fontWeight: 'bold',
+    },
+    mainInfo: {
+        color: 'grey',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        margin: 10,
+        marginLeft: 0,
+    },
+
+    productInfo: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        margin: 10,
+        marginLeft: 0,
     }
+
+
+
 });
 
 export default OrderScreen;
