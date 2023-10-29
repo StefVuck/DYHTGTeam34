@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, SafeAreaView, Image } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import { useNavigation } from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
@@ -14,6 +14,12 @@ const StartScreen = () => {
     return(
         <SafeAreaView style={tw`bg-white h-full`}> 
             <View style={styles.home}>
+            <TouchableOpacity 
+              style={styles.overlayButton} 
+              onPress={() => {
+                navigation.navigate("HomeScreen")
+                      }} 
+            />
                 <View style={[styles.logo, styles.logoFlexBox]}>
                     <View style={[styles.logoWrapper, styles.logoFlexBox]}>
                 <Image
@@ -68,6 +74,14 @@ const styles = StyleSheet.create({
       width: "100%",
       flex: 1,
     },
+    overlayButton: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'transparent'
+  },
   });
   
   export default StartScreen;

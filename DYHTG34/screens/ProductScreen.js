@@ -6,6 +6,7 @@ import tw from "tailwind-react-native-classnames";
 
 import { htmlToText } from 'html-to-text';
 import RenderHtml from 'react-native-render-html';
+import { Color } from '../GlobalStyles';
 
 const ProductScreen = () => {
   const [data, setData] = useState([]);
@@ -134,14 +135,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#e4fcff',
     alignItems: "center", 
     justifyContent: "center", 
     alignSelf: "center", 
 },
 
     orderItem: {
-        backgroundColor: '#ffffff',
+        backgroundColor: "#e4fcff",
         padding: 10,
         marginBottom: 10,
         borderRadius: 5
