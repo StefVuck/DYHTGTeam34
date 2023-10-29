@@ -19,6 +19,7 @@ const LoginScreen = () => {
                 label="Username"
                 style={styles.textInput}
                 value={email}
+
                 placeholder='Enter username'
                 onChangeText={(value) => { setEmail(value) }} />
 
@@ -65,7 +66,7 @@ let checkemail = async (userEmail) => {
         let response = await fetch('https://www.guitarguitar.co.uk/hackathon/customers/');
         let data = await response.json();
 
-        let customer = data.find((customer) => customer.email == userEmail);
+        let customer = data.find((customer) => customer.email.toLowerCase().includes(term.toLowerCase()) == userEmail);
         return customer;
     } catch (error) {
         console.log("Json fetch failed, ", error);

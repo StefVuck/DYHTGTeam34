@@ -13,8 +13,8 @@ const data = [
     },
     {
         id: "456",
-        title: "Extra",
-        screen: "ExtraScreen",
+        title: "Profile",
+        screen: "UserProfileScreen",
     },
 
     {
@@ -27,12 +27,16 @@ const data = [
         title: "Products",
         screen: "ProductScreen",
     },
-
+    {
+        id: "6969",
+        title: "Search",
+        screen: "SearchScreen",
+    },
     {
         id: "980",
         title: "Individual",
         screen: "IndividualProductScreen"
-    }
+    },
 ];
 
 const NavOptions = () => {

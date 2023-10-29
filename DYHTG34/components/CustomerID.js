@@ -1,10 +1,13 @@
-let customerId = null;
+let user = null;
 
-export function setCustomerId(id) {
-    console.log(id);
-    customerId = id;
+export function setCustomerId(inputUser) {
+    user = inputUser;
 }
 
-export function getCustomerId() {
-    return customerId;
+export function getCustomer() {
+    return user;
+}
+
+export function getLoyaltyLevel() {
+    return user?(user.LoyaltyLevel):(0);
 }

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, FlatList, Text, View, ActivityIndicator, SafeAreaView } from 'react-native';
+import { StyleSheet, FlatList, Text, View, ActivityIndicator, SafeAreaView , Image, Button} from 'react-native';
+import { TextInput, } from 'react-native-gesture-handler';
 import tw from "tailwind-react-native-classnames";
 import { Color } from '../GlobalStyles';
 
 const OrderScreen = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const DUMMY_CUSTOMER_ID = 6890;  
+    const [customerID, setCustomerID] = useState(6890);  
+    const [text, setText] = useState(6890);
 
     const getOrderStatus = (statusEnum) => {
         const orderStatusMap = {
@@ -27,7 +29,6 @@ const OrderScreen = () => {
         const day = daysOfWeek[date.getDay()];
         const hours = ("0" + date.getHours()).slice(-2);
         const minutes = ("0" + date.getMinutes()).slice(-2);
-      
         return `${day}, ${hours}:${minutes}`;
       }
 
@@ -36,15 +37,18 @@ const OrderScreen = () => {
         try {
             let response = await fetch('https://www.guitarguitar.co.uk/hackathon/orders/');
             let jsonData = await response.json();
-
-        
-            let customerOrders = jsonData.filter(order => order.CustomerId === DUMMY_CUSTOMER_ID);
+            let customerOrders = jsonData.filter(order => order.CustomerId.toString() === customerID.toString());
             setData(customerOrders);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
         setLoading(false);
     };
+
+    const filterOrders = async () => {
+        setCustomerID(text);
+        fetchOrdersForCustomer();
+    }
 
     useEffect(() => {
         fetchOrdersForCustomer();
@@ -56,27 +60,46 @@ const OrderScreen = () => {
             {loading ? (
                 <ActivityIndicator size="large" color="#0000ff" />
             ) : (
-                <FlatList
-                    data={data}
-                    keyExtractor={(item) => item.Id.toString()}
-                    renderItem={({ item }) => (
-                        <View style={styles.orderItem}>
-                            <Text>Order ID: {item.Id}</Text>
-                            <Text>Order Date: {formatDate(item.DateCreated)}</Text>
-                            <Text>Order Total: £{item.OrderTotal}</Text>
-                            <Text>Products:</Text>
-                            {item.Products.map( (product, index) => ( <Text key={index}>   &#x2022; {product.ItemName}</Text> ) ) }
-                            <Text>Shipping Address: </Text>
-                            <Text>   &#x2022; {item.ShippingAddress.street_address},</Text>
-                            <Text>   &#x2022; {item.ShippingAddress.street_name},</Text>
-                            <Text>   &#x2022; {item.ShippingAddress.city},</Text>
-                            <Text>   &#x2022; {item.ShippingAddress.zip_code},</Text>
-                            <Text>   &#x2022; {item.ShippingAddress.country}</Text>
-                            <Text></Text>
-                            <Text>Status: {getOrderStatus(item.OrderStatus)}</Text>
-                        </View>
+                <View>
+                    <View style={[styles.orderItem, {marginTop:50}]}>
+                        <TextInput placeholder="Enter customer ID" onChangeText={newText=>setText(newText.toString())} defaultValue={text} />
+                        <Button title="Search" onPress={filterOrders}/>
+                    </View>
+                        <FlatList
+                        data={data}
+                        keyExtractor={(item) => item.Id.toString()}
+                        renderItem={({ item }) => (
+                            <View>
+                                {JSON.stringify(item) === '{}' ? (
+                                    <Text> Loading... </Text>
+                                ) : (
+                                <View>
+                                    <View style={styles.orderItem}>
+                                        <View style={styles.productInfo}>
+                                            { item.Products.map((product) => (
+                                                <View style={styles.productInfo}>
+                                                    {product.PictureMain &&
+                                                    <Image source={{url: product.PictureMain}} />
+                                                                    }
+                                                    <Text> &#x2022; {product.ItemName}</Text>
+                                                    <Text style={{paddingLeft:20}}>Link</Text>
+                                                </View>
+                                              ))}
+                                        </View>
+                                        <View style={styles.dateInfo}>
+                                            <Text style={{flexDirection: 'column'}}>{'\n'}Purchased on {formatDate(item.DateCreated)}{'\n'}</Text>
+                                        </View>
+                                        <View style={styles.mainInfo}>
+                                            <Text style={styles.important}>Order {getOrderStatus(item.OrderStatus)}</Text>
+                                            <Text style={{paddingLeft: 20}}>£{item.OrderTotal}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                                )}
+                            </View>
                     )}
-                />
+                    />
+                </View>
             )}
         </View>
         </SafeAreaView> 
@@ -92,8 +115,7 @@ const styles = StyleSheet.create({
         backgroundColor: Color.colorLightcyan,
     },
     orderItem: {
-        flex: 1,
-      backgroundColor: '#ffffff',   
+        flex: 1, 
       padding: 15,
       borderRadius:20,
       marginBottom: 15,            
@@ -104,8 +126,28 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.25,         
       shadowRadius: 3.84,          
       elevation: 5,  
- 
+      backgroundColor: '#5fcfe3',
+    },
+    important: {
+        fontWeight: 'bold',
+    },
+    mainInfo: {
+        color: 'grey',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        margin: 10,
+        marginLeft: 0,
+    },
+
+    productInfo: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        margin: 10,
+        marginLeft: 0,
     }
+
+
+
 });
 
 export default OrderScreen;
