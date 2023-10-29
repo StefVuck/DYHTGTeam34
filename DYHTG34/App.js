@@ -8,6 +8,7 @@ import OrderScreen from "./screens/OrderScreen"
 import LoginScreen from "./screens/LoginScreen"
 import ProductScreen from './screens/ProductScreen';
 import StartScreen from './screens/StartScreen';
+import IndividualProductScreen from './screens/IndividualProductScreen';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -26,8 +27,10 @@ export default function App() {
         <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false,}} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false, } } />
         <Stack.Screen name="OrderScreen" component={OrderScreen} options={{headerShown: false,}} />
-        <Stack.Screen name="ProductScreen" component={ProductScreen} options={{headerShown: false,}} />
+        <Stack.Screen name="ProductScreen" component={ProductScreen} options={{ headerShown: false, }} />
+        <Stack.Screen name="IndividualProductScreen" component={IndividualProductScreen} options={{ headerShown: false, }} />
       </Stack.Navigator>
+
 
       </SafeAreaProvider>
       </NavigationContainer>

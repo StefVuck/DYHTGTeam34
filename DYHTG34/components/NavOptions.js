@@ -27,6 +27,12 @@ const data = [
         title: "Products",
         screen: "ProductScreen",
     },
+
+    {
+        id: "980",
+        title: "Individual",
+        screen: "IndividualProductScreen"
+    }
 ];
 
 const NavOptions = () => {
