@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, Button, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TextInput, Button, SafeAreaView, TouchableOpacity, View, Dimensions} from 'react-native';
 import React, { useState} from 'react';
 import { setCustomerId } from '../components/CustomerID';
 import { useNavigation } from '@react-navigation/native';
@@ -14,37 +14,38 @@ const LoginScreen = () => {
 
     return (
         <SafeAreaView style={styles.pageContainer}>
-            <Text>Login</Text>
-            <TextInput
-                label="Username"
-                style={styles.textInput}
-                value={email}
-
-                placeholder='Enter username'
-                onChangeText={(value) => { setEmail(value) }} />
-
-            <View style={styles.passwordContainer}>
+            <View style={styles.centered}>
+                <Text>Login</Text>
                 <TextInput
-                    label="Password"
-                    style={styles.passwordInput}
-                    secureTextEntry={isSecureEntry}
-                    value={password}
-                    placeholder='Enter Password'
-                        onChangeText={(value) => { setPassword(value) }} />
-                    <TouchableOpacity onPress={(isSecureEntry) => setIsSecureEntry(!isSecureEntry)}>
-                        <Text>{isSecureEntry ? 'show' : 'hide'}</Text>
-                    </TouchableOpacity>
+                    label="Username"
+                    style={[styles.textInput, {width: Dimensions.get('window').width/1.1}]}
+                    value={email}
+
+                    placeholder='Enter username'
+                    onChangeText={(value) => { setEmail(value) }} />
+
+                <View style={styles.passwordContainer}>
+                    <TextInput
+                        label="Password"
+                        style={styles.passwordInput}
+                        secureTextEntry={isSecureEntry}
+                        value={password}
+                        placeholder='Enter Password'
+                            onChangeText={(value) => { setPassword(value) }} />
+                        <TouchableOpacity onPress={(isSecureEntry) => setIsSecureEntry(!isSecureEntry)}>
+                            <Text>{isSecureEntry ? 'show' : 'hide'}</Text>
+                        </TouchableOpacity>
 
 
 
 
+                </View>
+
+                <Button
+                    onPress={() => { this.onPress(navigation, email, password); setEmail(''); setPassword('') }}
+                    title='Log in'
+                    />
             </View>
-
-            <Button
-                onPress={() => { this.onPress(navigation, email, password); setEmail(''); setPassword('') }}
-                title='Log in'
-                />
-            
         </SafeAreaView>
     );
 };
@@ -86,6 +87,12 @@ const styles = StyleSheet.create({
         fontSize: 20,
         borderWidth: 2,
         borderColor: 'blue',
+        margin: 10,
+    },
+    centered: {
+        position: "absolute",
+        top: Dimensions.get('window').height/2.5,
+        alignItems: "center",
         paddingTop: 20,
         marginHorizontal: 12,
         marginVertical: 20,

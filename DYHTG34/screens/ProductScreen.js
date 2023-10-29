@@ -9,7 +9,6 @@ import { getLoyaltyLevel } from "../components/CustomerID";
 import { htmlToText } from 'html-to-text';
 import RenderHtml from 'react-native-render-html';
 import { Assets } from "@react-navigation/elements";
-import { Color } from '../GlobalStyles';
 
 
 const ProductScreen = () => {

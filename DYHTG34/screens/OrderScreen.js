@@ -61,9 +61,10 @@ const OrderScreen = () => {
                 <ActivityIndicator size="large" color="#0000ff" />
             ) : (
                 <View>
-                    <View style={[styles.orderItem, {marginTop:50}]}>
-                        <TextInput placeholder="Enter customer ID" onChangeText={newText=>setText(newText.toString())} defaultValue={text} />
-                        <Button title="Search" onPress={filterOrders}/>
+                    <View style={[styles.searchContainer,{marginTop:50, height: 100}]}>
+                        <Text style={[styles.searchItem, {alignItems:'center', justifyContent:'center'}]}> ORDERS </Text>
+                        <TextInput style={[styles.searchItem, {backgroundColor:'white'}]} placeholder="Enter customer ID" onChangeText={newText=>setText(newText.toString())} defaultValue={text} />
+                        <Button style={styles.searchItem} title="Search" onPress={filterOrders}/>
                     </View>
                         <FlatList
                         data={data}
@@ -127,6 +128,18 @@ const styles = StyleSheet.create({
       shadowRadius: 3.84,          
       elevation: 5,  
       backgroundColor: '#5fcfe3',
+    },
+    searchContainer: {
+        borderColor: '#ddd',
+        borderRadius: 5,
+        backgroundColor: '#5fcfe3',
+        padding: 10,
+        marginBottom: 30,
+        
+    },
+    searchItem: {
+        padding: 1,
+
     },
     important: {
         fontWeight: 'bold',
