@@ -14,9 +14,10 @@ export const FontFamily = {
   /* Colors */
   export const Color = {
     colorLightcyan: "#e4fcff",
+    colorGainsboro: "#d9d9d9",
+    colorBlack: "#000",
     colorWhite: "#fff",
     colorSilver: "#c6c6c6",
-    colorBlack: "#000",
   };
   /* Paddings */
   export const Padding = {
