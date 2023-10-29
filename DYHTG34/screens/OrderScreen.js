@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, FlatList, Text, View, ActivityIndicator, SafeAreaView , Image, Button} from 'react-native';
 import { TextInput, } from 'react-native-gesture-handler';
 import tw from "tailwind-react-native-classnames";
+import { Color } from '../GlobalStyles';
 
 const OrderScreen = () => {
     const [data, setData] = useState([]);
@@ -60,9 +61,10 @@ const OrderScreen = () => {
                 <ActivityIndicator size="large" color="#0000ff" />
             ) : (
                 <View>
-                    <View style={[styles.orderItem, {marginTop:50}]}>
-                        <TextInput placeholder="Enter customer ID" onChangeText={newText=>setText(newText.toString())} defaultValue={text} />
-                        <Button title="Search" onPress={filterOrders}/>
+                    <View style={[styles.searchContainer,{marginTop:50, height: 100}]}>
+                        <Text style={[styles.searchItem, {alignItems:'center', justifyContent:'center'}]}> ORDERS </Text>
+                        <TextInput style={[styles.searchItem, {backgroundColor:'white'}]} placeholder="Enter customer ID" onChangeText={newText=>setText(newText.toString())} defaultValue={text} />
+                        <Button style={styles.searchItem} title="Search" onPress={filterOrders}/>
                     </View>
                         <FlatList
                         data={data}
@@ -111,14 +113,33 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-        backgroundColor: '#5fcfe3'
+        backgroundColor: Color.colorLightcyan,
     },
     orderItem: {
-        fontWeight: 'bold',
-        backgroundColor: '#ffffff',
+        flex: 1, 
+      padding: 15,
+      borderRadius:20,
+      marginBottom: 15,            
+      borderColor: '#ddd',         
+      borderWidth: 1,              
+      shadowColor: '#000',         
+      shadowOffset: { width: 0, height: 2 }, 
+      shadowOpacity: 0.25,         
+      shadowRadius: 3.84,          
+      elevation: 5,  
+      backgroundColor: '#5fcfe3',
+    },
+    searchContainer: {
+        borderColor: '#ddd',
+        borderRadius: 5,
+        backgroundColor: '#5fcfe3',
         padding: 10,
-        marginBottom: 10,
-        borderRadius: 10,
+        marginBottom: 30,
+        
+    },
+    searchItem: {
+        padding: 1,
+
     },
     important: {
         fontWeight: 'bold',

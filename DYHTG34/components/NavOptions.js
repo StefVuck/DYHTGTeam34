@@ -31,7 +31,12 @@ const data = [
         id: "6969",
         title: "Search",
         screen: "SearchScreen",
-    }
+    },
+    {
+        id: "980",
+        title: "Individual",
+        screen: "IndividualProductScreen"
+    },
 ];
 
 const NavOptions = () => {
@@ -41,11 +46,10 @@ const NavOptions = () => {
         <FlatList
             data={data}
             keyExtractor={(item) => item.id}
-            horizontal
             renderItem = {({item}) => (
                 <TouchableOpacity
                     onPress={() => navigation.navigate(item.screen)} 
-                    style={tw`p-3 bg-gray-200 m-2`}
+                    style={tw`p-3 bg-yellow-600 m-2`}
                 >
                     <Text style={tw` text-lg font-semibold`}> {item.title} </Text>
                     <Icon name="arrowright" color="black" type="antdesign" />

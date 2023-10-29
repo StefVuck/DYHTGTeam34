@@ -1,15 +1,13 @@
 /* fonts */
 export const FontFamily = {
-    interRegular: "Helvetica Neue",
-    interSemiBold: "HelveticaNeue-Bold",
-    interMedium: "HelveticaNeue-Medium",
-    interThin: "HelveticaNeue-Thin",
+    interRegular: "Inter-Regular",
+    interSemiBold: "Inter-SemiBold",
+    interThin: "Inter-Thin",
   };
   /* font sizes */
   export const FontSize = {
-    size_smi: 13,
-    size_base: 16,
     size_xs: 12,
+    size_base: 16,
     size_5xs: 8,
     size_4xs: 9,
   };
