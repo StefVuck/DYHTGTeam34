@@ -189,7 +189,11 @@ const ProductScreen = () => {
               {item.Description && <MoreLessComponent text={item.Description} linesToTruncate = {8}/> }
               <Text style={styles.productDescription}>Description: {item.Description}</Text> 
               <Text>Details: </Text>
-              <Text>{htmlToText(item.ProductDetail)}</Text>
+              {item.ProductDetail.length <= 200 ? (
+                <Text>{htmlToText(item.ProductDetail)}</Text>
+              ) : (
+                <Text>{htmlToText(item.ProductDetail).substring(0, 200) + "..."}</Text>
+              )}
               </View>
             )
             } 
