@@ -25,7 +25,7 @@ const data = [
     {
         id: "912",
         title: "Products",
-        screen: "ProductScreen",
+        screen: "FilteredProductScreen",
     },
     {
         id: "6969",

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from 'react';
-import { Text, View, ActivityIndicator, StyleSheet, FlatList, Image, SafeAreaView, Dimensions } from 'react-native';
+import { Text, View, ActivityIndicator, StyleSheet, FlatList, Image, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
 import tw from "tailwind-react-native-classnames";
 import { Padding, FontSize, FontFamily, Color, Border } from "../GlobalStyles";
 import { getLoyaltyLevel } from "../components/CustomerID";
@@ -11,11 +11,30 @@ import RenderHtml from 'react-native-render-html';
 import { Assets } from "@react-navigation/elements";
 
 
-const ProductScreen = () => {
+
+const ProductScreen = ({ query }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [listHeight, setListHeight] = useState(ScreenHeight);
+  const [products, setProducts] = useState([]);
 
+  useEffect(() => {
+    console.log(query)
+    
+    if(query!="") {
+      let categories = products.map(product => product.Category);
+      console.log("All fetched categories:", categories);
+
+
+      const results = products.filter(item => item.Category && item.Category.toLowerCase().includes(query.toLowerCase()));
+  
+      console.log("Filtered results: ", results);
+      setData(results);
+    } else {
+      setData(products)
+    }
+
+  }, [query, products]);
 
   const getBodyShape = (BodyShapeEnum) => {
     const BodyShapeEnumMap = {
@@ -82,62 +101,76 @@ const ProductScreen = () => {
 
     switch (loyalty) {
         case 0:
-            return item.price;
+            return item.SalesPrice;
         case 1:
             if (item.category.substring(0, 2) === "GU") {
-                return item.price * 0.95;
+                return item.SalesPrice * 0.95;
             } else {
-                return item.price;
+                return item.SalesPrice;
             }
         case 2:
             if (item.category.substring(0, 2) === "GU" || item.category === "ACGB") {
-                return item.price * 0.90;
+                return item.SalesPrice * 0.90;
             } else {
-                return item.price;
+                return item.SalesPrice;
             }
         case 3:
-            return item.price * 0.9;
+            return item.SalesPrice * 0.9;
         default:
-            return item.price; // return the original price if the loyalty value is unexpected.
+            return item.SalesPrice; // return the original price if the loyalty value is unexpected.
     }
 }
 
-  const MoreLessComponent = ({ truncatedText, fullText }) => {
-    const [more, setMore] = React.useState(false);
+const MoreLessComponent = ({ truncatedText, fullText }) => {
+  const [more, setMore] = useState(false);
+
+  return (
+    <View>
+      <Text>{!more ? `${truncatedText}...` : fullText}</Text>
+      <TouchableOpacity onPress={() => setMore(!more)}>
+        <Text>{more ? 'less' : 'more'}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const MoreInfo = ({ text, linesToTruncate }) => {
+  const [clippedText, setClippedText] = useState(null);
+
+  if (clippedText !== null) {
     return (
-      <Text>
-        {!more ? `${truncatedText}...` : fullText}
-        <TouchableOpacity onPress={() => setMore(!more)}>
-          <Text>{more ? 'less' : 'more'}</Text>
-        </TouchableOpacity>
-      </Text>
-    );
-  };
-  const MoreInfo = ({text, linesToTruncate}) => {
-    const [clippedText, setClippedText] = React.useState(false);
-    return clippedText ? (
       <MoreLessComponent truncatedText={clippedText} fullText={text} />
-    ) : (
-      <Text
-        numberOfLines={linesToTruncate}
-        ellipsizeMode={'tail'}
-        onTextLayout={(event) => {
-          const { lines } = event.nativeEvent;
-          let text = lines
+    );
+  }
+
+  return (
+    <Text
+      numberOfLines={linesToTruncate}
+      ellipsizeMode={'tail'}
+      onTextLayout={(event) => {
+        const { lines } = event.nativeEvent;
+        if (lines.length > linesToTruncate) {
+          let truncated = lines
             .splice(0, linesToTruncate)
             .map((line) => line.text)
             .join('');
-          setClippedText(text.substr(0, text.length - 9));
-        }}>
-        {text}
-      </Text>
-    );
-  };
+          setClippedText(truncated);
+        }
+      }}
+    >
+      {text}
+    </Text>
+  );
+};
+
   const fetchProducts = async () => {
     setLoading(true);
     try {
       let response = await fetch('https://www.guitarguitar.co.uk/hackathon/products');
       let products = await response.json();
+
+      // console.log("Filteredprod: ", products );
+      setProducts(products);
       setData(products);
     }
     catch(error) {
@@ -146,19 +179,19 @@ const ProductScreen = () => {
     setLoading(false);
   }
   
+
+
   useEffect(() => {
       fetchProducts();
   }, []);
 
   useEffect(() => {
-    console.log(data);
+    //console.log(data);
 }, [data]);
 
 
 
 
-  console.log(Array.isArray(data))
-  console.log(data.length)
   return (
     <SafeAreaView style={tw`bg-blue-500 h-full`}> 
 
@@ -176,24 +209,22 @@ const ProductScreen = () => {
               <View style={styles.productCard}>
               <Image source = {require("../assets/logo.png")} style={styles.productLogo} />
               <Image source={{ uri: item.PictureMain }} style={styles.productImage} />
-              <Text style={styles.brandName}>Name: {item.ItemName}</Text>
-              {item.Title && <Text style={styles.brandName}>Title: {item.Title}</Text>}
-              <Text>Brand: {item.BrandName}</Text>
-              <Text>Price: £{calculateDiscountedPrice(item)}</Text>
-              <Text>In Stock: {item.QtyInStock}</Text>
-              <Text>On Order: {item.QtyOnOrder}</Text>
+            <View style={styles.insideCard}>
+              <Text style={styles.productName}>{item.ItemName}</Text>
+              <Text style={styles.brandName}>Brand: {item.BrandName}</Text>
+              <Text style={styles.brandName}>Price: £{calculateDiscountedPrice(item)}</Text>
+              <Text style={styles.brandName}>In Stock: {item.QtyInStock}</Text>
+              <Text style={styles.brandName}>On Order: {item.QtyOnOrder}</Text>
               {item.ColorOption && <Text>Colour: {getColor(item.ColourOption)}</Text>}
               {item.ShapeOption && <Text>Body Shape: {getBodyShape(item.ShapeOption)}</Text>}
               {item.PickupOption && <Text>Pickup: {getPickup(item.PickupOption)}</Text>}
-              {item.Description && <MoreLessComponent text={item.Description} linesToTruncate = {8}/> }
-              <Text style={styles.productDescription}>Description: {item.Description}</Text> 
+              {item.Description && <Text>Description: {item.Description} </Text> }
+            </View>
+            <View>
               <Text>Details: </Text>
-              {item.ProductDetail.length <= 200 ? (
-                <Text>{htmlToText(item.ProductDetail)}</Text>
-              ) : (
-                <Text>{htmlToText(item.ProductDetail).substring(0, 200) + "..."}</Text>
-              )}
+              <MoreInfo text={htmlToText(item.ProductDetail)} linesToTruncate = {13}/>             
               </View>
+            </View>
             )
             } 
           />
@@ -240,6 +271,20 @@ const styles = StyleSheet.create({
       flex: 1,
     
   },
+
+  insideCard: {
+    flex: 1,
+      backgroundColor: Color.colorLightcyan,   
+      padding: 15,
+      borderRadius:20,            
+      borderColor: '#ddd',         
+      borderWidth: 1,              
+      shadowColor: '#000',         
+      shadowOffset: { width: 0, height: 2 }, 
+      shadowOpacity: 0.25,         
+      shadowRadius: 3.84,          
+      elevation: 3,             
+  },
   productLogo: {
     width: 100, 
     height: 100, 
@@ -254,14 +299,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   productName: {
-    fontSize: 18,
-    borderWidth: 1,
+    fontSize: 16,
     fontWeight: 'bold',
   },
   brandName: {
-    fontSize: 16,
-    borderWidth: 1,
-    color: '#777',
+    fontSize: 14,
+    color: "#777"
   },
   productDescription: {
     fontSize: 13,
