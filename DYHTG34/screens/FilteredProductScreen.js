@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   filterButton: {
-    backgroundColor: "#FFD700",
+    backgroundColor: "#5fcfe3",
     padding: 10,
     borderRadius: 5,
     alignItems: "center",
