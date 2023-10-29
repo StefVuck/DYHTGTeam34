@@ -8,45 +8,48 @@ const IndividualProductScreen = () => {
     let [available, setAvailable] = useState('');
 
 
-    setLoading(true);
-    setAvalible('');
+    useEffect(() => {
+        setLoading(true);
 
+        const fetchProduct = async () => {
+            try {
+                let response = await fetch('https://www.guitarguitar.co.uk/hackathon/products/');
+                let products = await response.json();
 
-    const fetchProduct = async () => {
-        try {
-            let response = await fetch('https://www.guitarguitar.co.uk/hackathon/products/');
-            let products = await response.json();
+                let prod = products.find((prod) => prod.ItemName == "FE620 Electric Guitar Gig Bag");
+                setData(prod);
 
-            let prod = products.find((prod) => prod.ItemName == "FE620 Electric Guitar Gig Bag");
-            setData(prod);
+                if (prod != null) {
+                    if (prod.QtyInStock > 0) {
+                        if (prod.Online) {
+                            setAvailable("Available Online");
+                        } else {
+                            setAvailable("Only available in store");
+                        }
+                    } else {
+                        setAvailable("Not in stock");
+                    }
+                }
 
-        }
-
-        catch (error) {
-            console.log("error ", error);
-        }
-
-        finally {
-            setLoading(false);
-            return;
-        };
-        
-    };
-
-    setTimeout((console.log(data)), 5000);
-
-    if (prod != null) {
-        if (prod.QtyInStock > 0) {
-            if (prod.Online) {
-                available = "Available Online";
-            } else {
-                available = "Only available in store";
+            } catch (error) {
+                console.log("error ", error);
+            } finally {
+                setLoading(false);
             }
-        } else {
-            available = "Not in stock";
-        }
-    }
-    setAvailable(available);
+        };
+
+        fetchProduct();
+    }, []);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            console.log(data);
+
+        }, 5000);
+
+        return () => clearTimeout(timer);
+    }, [data]);
+
     return (<SafeAreaView>{loading ? (<Text> Loading</Text >) : (<Product product={data} available={available} />)}</SafeAreaView>);
 };
 
