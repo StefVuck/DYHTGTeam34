@@ -9,7 +9,8 @@ import { getLoyaltyLevel } from "../components/CustomerID";
 import { htmlToText } from 'html-to-text';
 import RenderHtml from 'react-native-render-html';
 import { Assets } from "@react-navigation/elements";
-// import React from 'react';
+import { Color } from '../GlobalStyles';
+
 
 const ProductScreen = () => {
   const [data, setData] = useState([]);
@@ -208,7 +209,22 @@ const ScreenHeight = Dimensions.get('window').height;
 const ScreenWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
-  productCard: {
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#e4fcff',
+    alignItems: "center", 
+    justifyContent: "center", 
+    alignSelf: "center", 
+},
+
+    orderItem: {
+        backgroundColor: "#e4fcff",
+        padding: 10,
+        marginBottom: 10,
+        borderRadius: 5
+    },
+    productCard: {
       flex: 1,
       backgroundColor: '#ffffff',   
       padding: 15,

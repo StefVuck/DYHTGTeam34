@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, FlatList, Text, View, ActivityIndicator, SafeAreaView , Image, Button} from 'react-native';
 import { TextInput, } from 'react-native-gesture-handler';
 import tw from "tailwind-react-native-classnames";
+import { Color } from '../GlobalStyles';
 
 const OrderScreen = () => {
     const [data, setData] = useState([]);
@@ -111,14 +112,21 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-        backgroundColor: '#5fcfe3'
+        backgroundColor: Color.colorLightcyan,
     },
     orderItem: {
-        fontWeight: 'bold',
-        backgroundColor: '#ffffff',
-        padding: 10,
-        marginBottom: 10,
-        borderRadius: 10,
+        flex: 1, 
+      padding: 15,
+      borderRadius:20,
+      marginBottom: 15,            
+      borderColor: '#ddd',         
+      borderWidth: 1,              
+      shadowColor: '#000',         
+      shadowOffset: { width: 0, height: 2 }, 
+      shadowOpacity: 0.25,         
+      shadowRadius: 3.84,          
+      elevation: 5,  
+      backgroundColor: '#5fcfe3',
     },
     important: {
         fontWeight: 'bold',
